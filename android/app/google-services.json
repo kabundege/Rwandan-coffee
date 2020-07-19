@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "390882023996",
+    "firebase_url": "https://rwandan-coffee.firebaseio.com",
+    "project_id": "rwandan-coffee",
+    "storage_bucket": "rwandan-coffee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390882023996:android:71c17705460bf867700139",
+        "android_client_info": {
+          "package_name": "com.RwandanCoffee.brewcrew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390882023996-13qp3o6i7el98c4n7i75m88qfc8i3f39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs5LoTYuqR5ORCOFupoA0lZm_lXXGs6I0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390882023996-13qp3o6i7el98c4n7i75m88qfc8i3f39.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
