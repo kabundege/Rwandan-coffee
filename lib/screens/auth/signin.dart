@@ -1,4 +1,6 @@
 import 'package:brewcrew/services/auth.dart';
+import 'package:brewcrew/shared/constants.dart';
+import 'package:brewcrew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -12,13 +14,15 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -42,6 +46,7 @@ class _SignInState extends State<SignIn> {
               children: <Widget>[
                 SizedBox(height: 20.0),
                 TextFormField(
+                  decoration: TextInputDeoration.copyWith(hintText: 'Email'),
                   validator: (value) =>
                       value.isEmpty ? 'email is required' : null,
                   onChanged: (value) {
@@ -50,6 +55,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  decoration: TextInputDeoration.copyWith(hintText: 'Password'),
                   validator: (value) =>
                       value.length < 6 ? 'Password Too Short' : null,
                   obscureText: true,
@@ -57,7 +63,7 @@ class _SignInState extends State<SignIn> {
                     setState(() => password = value);
                   },
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 20.0, width: 10.0),
                 RaisedButton(
                   color: Colors.pink[400],
                   child: Text(
@@ -66,10 +72,21 @@ class _SignInState extends State<SignIn> {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      print('Ready to Log');
+                      setState(() => loading = true);
+                      dynamic result = await _auth.signInWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() => {
+                          error = 'invalide credentials',
+                          loading = false,
+                          });
+                      }
                     }
                   },
-                )
+                ),
+                SizedBox(height: 12.0),
+                Text(error,
+                    style: TextStyle(color: Colors.redAccent, fontSize: 14)),
               ],
             )),
       ),
