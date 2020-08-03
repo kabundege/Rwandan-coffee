@@ -1,4 +1,6 @@
 import 'package:brewcrew/services/auth.dart';
+import 'package:brewcrew/shared/constants.dart';
+import 'package:brewcrew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -12,6 +14,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = '';
   String password = '';
@@ -19,7 +22,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -42,6 +45,7 @@ class _SignUpState extends State<SignUp> {
           children: <Widget>[
             SizedBox(height: 20.0),
             TextFormField(
+              decoration: TextInputDeoration.copyWith(hintText: 'Email'),
               validator: (value) => value.isEmpty ? 'email is required' : null,
               onChanged: (value) {
                 setState(() => email = value);
@@ -49,6 +53,7 @@ class _SignUpState extends State<SignUp> {
             ),
             SizedBox(height: 20.0),
             TextFormField(
+              decoration: TextInputDeoration.copyWith(hintText: 'Password'),
               validator: (value) =>
                   value.length < 6 ? 'Password Too Short' : null,
               obscureText: true,
@@ -65,10 +70,14 @@ class _SignUpState extends State<SignUp> {
               ),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
+                  setState(() => loading = true);
                   dynamic result =
                       await _auth.signUpWithEmailAndPassword(email, password);
                   if (result == null) {
-                    setState(() => error = 'Invalid Email');
+                    setState(() => {
+                      error = 'Invalid Email',
+                      loading = false,
+                      });
                   }
                 }
               },
